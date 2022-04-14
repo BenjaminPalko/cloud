@@ -11,6 +11,7 @@
     <groupId>com.cloud</groupId>
     <artifactId>gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>gateway</name>
     <description>gateway</description>
     <properties>
