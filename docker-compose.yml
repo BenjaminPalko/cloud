@@ -11,14 +11,14 @@ services:
       - "27017:27017"
   gateway:
     build:
-      context: ../gateway
-      dockerfile: Dockerfile
+      context: gateway
+      dockerfile: gateway/Dockerfile
     depends_on:
       - rabbitmq
   user-service:
     build:
-      context: ../user-service
-      dockerfile: Dockerfile
+      context: user-service
+      dockerfile: user-service/Dockerfile
     depends_on:
       - rabbitmq
       - mongo
