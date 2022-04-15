@@ -1,10 +1,10 @@
-package com.cloud.gateway;
+package com.benjaminpalko.microservices.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GatewayApplicationTests {
+class UserServiceApplicationTests {
 
     @Test
     void contextLoads() {
