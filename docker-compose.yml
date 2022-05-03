@@ -12,13 +12,13 @@ services:
   gateway:
     build:
       context: gateway
-      dockerfile: gateway/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       - rabbitmq
   user-service:
     build:
       context: user-service
-      dockerfile: user-service/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       - rabbitmq
       - mongo
