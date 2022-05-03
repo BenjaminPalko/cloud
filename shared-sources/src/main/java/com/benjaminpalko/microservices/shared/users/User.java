@@ -2,6 +2,7 @@ package com.benjaminpalko.microservices.shared.users;
 
 import com.benjaminpalko.microservices.shared.mongo.MongoAuditing;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Date;
 import java.util.UUID;
@@ -12,6 +13,12 @@ public class User extends MongoAuditing {
     private final String firstName;
     private final String lastName;
     private final Date birthday;
+
+    public User(String firstName, String lastName, Date birthday) {
+        this(new Date(), new Date(), "SYSTEM", "SYSTEM", UUID.randomUUID(), firstName, lastName, birthday);
+    }
+
+    @PersistenceConstructor
     protected User(Date createdOn, Date lastModifiedOn, String createBy, String lastModifiedBy, UUID id, String firstName, String lastName, Date birthday) {
         super(createdOn, lastModifiedOn, createBy, lastModifiedBy);
         this.id = id;
