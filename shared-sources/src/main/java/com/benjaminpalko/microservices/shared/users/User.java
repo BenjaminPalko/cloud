@@ -1,5 +1,6 @@
-package com.benjaminpalko.microservices.shared;
+package com.benjaminpalko.microservices.shared.users;
 
+import com.benjaminpalko.microservices.shared.mongo.MongoAuditing;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.benjaminpalko.microservices.shared;
+package com.benjaminpalko.microservices.shared.mongo;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
