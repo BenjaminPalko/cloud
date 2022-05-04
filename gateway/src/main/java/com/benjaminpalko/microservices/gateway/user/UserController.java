@@ -1,7 +1,6 @@
 package com.benjaminpalko.microservices.gateway.user;
 
 import com.benjaminpalko.microservices.shared.users.User;
-import com.benjaminpalko.microservices.shared.users.UserDocument;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping(path = "/api")
 public class UserController {
@@ -27,11 +28,11 @@ public class UserController {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @RequestMapping(path = "/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<UserResponse>> createUser(@RequestBody Mono<UserRequest> request, @Qualifier("userQueueName") String userQueueName) {
         return request
                 .log()
-                .mapNotNull(req -> rabbitTemplate.convertSendAndReceive(userQueueName, req))
+                .mapNotNull(req -> rabbitTemplate.convertSendAndReceive(userQueueName, req.toUser()))
                 .flatMap(o -> {
                     if(o instanceof User user) {
                         return Mono.just(UserResponse.FromUser(user));

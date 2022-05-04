@@ -18,6 +18,10 @@ public class UserDocument extends MongoAuditing {
         return new UserDocument(user.firstName(), user.lastName(), user.birthday());
     }
 
+    public User toUser() {
+        return new User(firstName, lastName, birthday);
+    }
+
     public UserDocument(String firstName, String lastName, Date birthday) {
         this(new Date(), new Date(), "SYSTEM", "SYSTEM", UUID.randomUUID(), firstName, lastName, birthday);
     }

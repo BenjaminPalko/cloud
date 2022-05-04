@@ -17,7 +17,7 @@ public class UserDocumentService {
     @RabbitListener(queues = "userQueue")
     public User listenUserQueue(User user) {
         return userDocumentRepository.save(UserDocument.FromUser(user))
-                .map(User::FromUserDocument)
+                .map(UserDocument::toUser)
                 .block();
     }
 }
