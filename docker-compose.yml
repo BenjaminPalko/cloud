@@ -17,6 +17,10 @@ services:
       - "8080:8080"
     depends_on:
       - rabbitmq
+    links:
+      - rabbitmq
+    environment:
+      - RABBIT_HOST=rabbitmq
   user-service:
     build:
       context: user-service
@@ -24,5 +28,9 @@ services:
     depends_on:
       - rabbitmq
       - mongo
+    links:
+      - rabbitmq
+      - mongo
     environment:
       - MONGO_URI=mongodb://mongo:27017/user_service
+      - RABBIT_HOST=rabbitmq

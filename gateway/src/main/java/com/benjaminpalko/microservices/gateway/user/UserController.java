@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,16 +29,11 @@ public class UserController {
     }
 
     @RequestMapping(path = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<UserResponse>> createUser(@RequestBody Mono<UserRequest> request, @Qualifier("userQueueName") String userQueueName) {
+    public Mono<ResponseEntity<UserResponse>> createUser(@RequestBody Mono<UserRequest> request) {
         return request
                 .log()
-                .mapNotNull(req -> rabbitTemplate.convertSendAndReceive(userQueueName, req.toUser()))
-                .flatMap(o -> {
-                    if(o instanceof User user) {
-                        return Mono.just(UserResponse.FromUser(user));
-                    }
-                    return Mono.error(new InstantiationException("User Service response not of type User"));
-                })
+                .mapNotNull(req -> rabbitTemplate.convertSendAndReceiveAsType("user-queue", req.toUser(), new ParameterizedTypeReference<User>() {}))
+                .map(UserResponse::FromUser)
                 .map(ResponseEntity::ok)
                 .onErrorResume(throwable -> {
                     logger.error("Error with User Service response", throwable);

@@ -14,7 +14,7 @@ public class UserDocumentService {
         this.userDocumentRepository = userDocumentRepository;
     }
 
-    @RabbitListener(queues = "userQueue")
+    @RabbitListener(queues = "user-queue")
     public User listenUserQueue(User user) {
         return userDocumentRepository.save(UserDocument.FromUser(user))
                 .map(UserDocument::toUser)
