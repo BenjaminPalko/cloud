@@ -23,16 +23,16 @@ public class VideoService {
     }
 
     public Flux<GridFSFile> getAllVideos() {
-        return gridFsTemplate.find(new Query());
+        return gridFsTemplate.find(Query.query(Criteria.where("metadata._contentType").is("video")));
     }
 
     public Mono<GridFSFile> getVideo(String id) {
-        return gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(id)));
+        return gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(id).and("metadata._contentType").is("video")));
     }
 
     public Mono<ReactiveGridFsResource> getVideoResource(String id) {
         return gridFsTemplate
-                .findOne(Query.query(Criteria.where("_id").is(id)))
+                .findOne(Query.query(Criteria.where("_id").is(id).and("metadata._contentType").is("video")))
                 .flatMap(gridFsTemplate::getResource);
     }
 
@@ -41,6 +41,6 @@ public class VideoService {
     }
 
     public Mono<Void> deleteVideo(String id) {
-        return gridFsTemplate.delete(Query.query(Criteria.where("_id").is(id)));
+        return gridFsTemplate.delete(Query.query(Criteria.where("_id").is(id).and("metadata._contentType").is("video")));
     }
 }
