@@ -20,6 +20,7 @@ services:
     links:
       - rabbitmq
     environment:
+      - MONGO_URI=mongodb://mongo:27017/cloud
       - RABBIT_HOST=rabbitmq
   user-service:
     build:
@@ -32,5 +33,5 @@ services:
       - rabbitmq
       - mongo
     environment:
-      - MONGO_URI=mongodb://mongo:27017/user_service
+      - MONGO_URI=mongodb://mongo:27017/cloud
       - RABBIT_HOST=rabbitmq

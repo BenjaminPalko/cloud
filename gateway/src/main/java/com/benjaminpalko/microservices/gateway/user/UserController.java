@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Date;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/users")
 public class UserController {
 
     private static final Logger logger = LogManager.getLogger(UserController.class);
@@ -28,7 +28,7 @@ public class UserController {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @RequestMapping(path = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<UserResponse>> createUser(@RequestBody Mono<UserRequest> request) {
         return request
                 .log()
