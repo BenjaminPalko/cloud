@@ -35,7 +35,7 @@ public class VideoController {
                 ));
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<String> uploadVideos(@RequestPart("videos")Flux<FilePart> fileParts) {
         return fileParts
                 .log()
@@ -44,7 +44,7 @@ public class VideoController {
                 .map(ObjectId::toHexString);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = "video/mp4")
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Map> getVideo(@PathVariable String id) {
         return videoService
                 .getVideo(id)
