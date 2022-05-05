@@ -24,7 +24,7 @@ public class VideoController {
         this.videoService = videoService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<Map> getVideoFiles() {
         return videoService
                 .getAllVideos()
@@ -35,7 +35,7 @@ public class VideoController {
                 ));
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<String> uploadVideos(@RequestPart("videos")Flux<FilePart> fileParts) {
         return fileParts
                 .log()
@@ -44,7 +44,7 @@ public class VideoController {
                 .map(ObjectId::toHexString);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Map> getVideo(@PathVariable String id) {
         return videoService
                 .getVideo(id)
@@ -55,16 +55,16 @@ public class VideoController {
                 ));
     }
 
-    @RequestMapping(path = "/stream/{id}", method = RequestMethod.GET, produces = "video/mp4")
+    @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Void> deleteVideo(@PathVariable String id) {
+        return videoService.deleteVideo(id);
+    }
+
+    @GetMapping(path = "/stream/{id}", produces = "video/mp4")
     public Flux<DataBuffer> streamVideo(@PathVariable String id) {
         return videoService
                 .getVideoResource(id)
                 .flatMapMany(ReactiveGridFsResource::getDownloadStream);
-    }
-
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
-    public Mono<Void> deleteVideo(@PathVariable String id) {
-        return videoService.deleteVideo(id);
     }
 }
