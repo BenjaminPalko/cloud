@@ -9,6 +9,18 @@ services:
     image: mongo:latest
     ports:
       - "27017:27017"
+  ui:
+    build:
+      context: ui
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway
+    links:
+      - gateway
+    environment:
+      - SERVER_URI=http://gateway:8080
   gateway:
     build:
       context: gateway
