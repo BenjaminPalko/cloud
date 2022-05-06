@@ -14,19 +14,19 @@ services:
       context: ui
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "8080:8080"
     depends_on:
       - gateway
     links:
       - gateway
     environment:
-      - GATEWAY_URI=http://gateway:8080
+      - GATEWAY_URI=gateway:3000
   gateway:
     build:
       context: gateway
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "3000:8080"
     depends_on:
       - rabbitmq
     links:
