@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/video")
+@CrossOrigin
 public class VideoController {
 
     private final VideoService videoService;
